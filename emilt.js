@@ -3,5 +3,5 @@ function emilSetup(){
 }
 
 function emilDraw(){
-    circle(50,300,20)
+    circle(300,50,20)
 }
