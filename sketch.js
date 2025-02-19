@@ -5,6 +5,6 @@ function setup()
 
 function draw()
 {
-    function madsDraw();
-    function emilDraw();
+    madsDraw();
+    emilDraw();
 }
