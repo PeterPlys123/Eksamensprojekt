@@ -3,5 +3,5 @@ function madsSetup(){
 }
 
 function madsDraw(){
-rect(300,50,20,20)
+rect(50,50,20,20)
 }
