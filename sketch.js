@@ -1,11 +1,13 @@
-function setup() 
-{
-	createCanvas(400, 2000);
-    background('black')
+let baggrund
+
+function setup() {
+    madsSetup();
+	createCanvas(windowWidth, windowHeight);
+    
 }
 
 function draw()
 {
     madsDraw();
-    emilDraw();
+    //emilDraw();
 }
