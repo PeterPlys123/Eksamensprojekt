@@ -1,6 +1,6 @@
 let baggrund
 function preload(){
-bagBill = loadImage('C:\Users\mads\OneDrive\Billeder')
+bagBill = loadImage('')
 
 }
 
