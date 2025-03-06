@@ -6,6 +6,7 @@ let playerYSpeed = 10;
 
 function setup(){
     createCanvas(1000, 600);
+
 }
 function player(){
 
