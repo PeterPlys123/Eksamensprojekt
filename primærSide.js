@@ -1,18 +1,15 @@
 let baggrund
-function preload(){
-bagBill = loadImage('')
-
-}
+var lars
 
 function setup() {
     madsSetup();
 	createCanvas(windowWidth, windowHeight);
-    image(bagBill,0,0)
-    
+    lars = loadImage("lars.png")
 }
 
 function draw()
 {   
+    image(lars,100,100)
     madsDraw();
     //emilDraw();
 }
