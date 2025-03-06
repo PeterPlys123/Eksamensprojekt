@@ -1,5 +1,4 @@
-let knapStart
-let knapTutorial
+let knapStart, knapTutorial, tutorialArray, tutHop, tutGå, bagBill
 
 
 function madsSetup(){
@@ -11,6 +10,7 @@ function madsDraw(){
 
 
 }
+
 
 function GUI(){
 
@@ -33,6 +33,9 @@ function GUI(){
 }
 
 function tutorial(){
+tutHop 
+
+
 
 
 
