@@ -1,9 +1,34 @@
-function setup() 
-{
-	createCanvas(400, 400);
+function trampBlok(){
+
+
 }
 
-function draw()
-{
+
+function dltBlok(){
+
+
+
+}
+
+
+function blok(){
+
+
+
+
+}
+
+
+function sandBlok(){
+
+
+
+
+}
+
+
+function isBlok(){
+
+
 
 }
