@@ -1,6 +1,7 @@
 function trampBlok(){
 
 
+
 }
 
 
@@ -15,12 +16,10 @@ function blok(){
 
 
 
-
 }
 
 
 function sandBlok(){
-
 
 
 
