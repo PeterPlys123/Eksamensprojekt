@@ -4,7 +4,7 @@ let cnv; //canvas
 
 let playerD = 60;
 let playerX = cnvwidth / 2;
-let playerY = cnvheight - playerD / 2;
+let playerY = 200;
 
 let playerYVelocity;
 let playerXSpeed = 7;
@@ -15,9 +15,12 @@ let isDown;
 let isLeft;
 let isRight;
 
+let scroll;
+
 function setup(){
     cnv = createCanvas(cnvwidth, cnvheight);
     cnv.position(windowWidth - (windowWidth + cnvwidth) / 2, 0) //centrere canvas
+    scroll = 0
 }
 function playerGravity(){
 
@@ -32,28 +35,6 @@ function playerGravity(){
     }
 }
 
-function keyPressed(){
-    if(keyIsDown(65)){ //left a
-        isLeft = true;
-    } else{
-        isLeft = false;
-    }
-    if(keyIsDown(68)){ //right d
-        isRight = true;
-    } else{
-        isRight = false
-    }
-    if(keyIsDown(87)){ //up w
-        isUp = true;
-    } else{
-        isUp = false
-    }
-    if(keyIsDown(83)){ //down s
-        isDown = true;
-    } else{
-        isDown = false
-    }
-}
 
 function playerMovement(){
     if(keyIsDown(65)){ //left
@@ -62,38 +43,40 @@ function playerMovement(){
     if(keyIsDown(68)){ //right
         playerX += playerXSpeed;
     }
-    if(keyIsDown(87)){ //up
+    if(keyIsDown(87) && playerY > height * 0){ //up
         playerY -= playerYSpeed;
-        isUp = true;
-    } else{
-        isUp = false;
-    }
-    if(keyIsDown(83)){ //down
+    } 
+    if(keyIsDown(83) && playerY < height * 0.9){ //down
         playerY += playerYSpeed;
-        isDown = true
-    } else{
-        isDown = false
-    }
+    } 
 
     circle(playerX, playerY, playerD);
     
 }
   
 function verticalScroll(){
-    let scroll;
 
+    playerMovement();
+    //playerGravity();
+
+    if(playerY < height * 0.1){
+        scroll += 5
+    }
+    if(playerY > height * 0.9){
+        scroll -= 5
+    }
+
+    push();
     translate (0, scroll)
 
-    if(isUp == true){
-        if(playerY < height / 2){
-            scroll += 5
-        }
-    }
+    circle(300,300,50);
+    pop();
+    
 }
 
 
 function draw(){
     background(200);
-    //playerMovement();
-    //playerGravity();
+    verticalScroll();
+
 }
