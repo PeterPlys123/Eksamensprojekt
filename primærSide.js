@@ -1,4 +1,5 @@
-let canvas, baggrund, blokArray, farveArray, i
+let canvas, baggrund, blokArray, farveArray
+
 
 function setup() {
 	createCanvas(800, 400);
@@ -9,9 +10,21 @@ function setup() {
 
 function draw()
 {   
-    for(i = 0; i < 5; i++)
+    background(170)
+    testBevægelse()
+
+    for(let i = 0; i < 5; i++)
         {
         fill(farveArray[i])
         rect(blokArray[i], 360, 75, 20)
         }
+
+    if(playerY > 360 && playerY < 380){
+        if(playerX > blokArray[0] && playerX < blokArray[0] + 75){
+            trampBlok(playerYSpeed)
+        }
     }
+    else{
+    }
+        
+}
