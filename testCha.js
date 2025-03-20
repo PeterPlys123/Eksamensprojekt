@@ -1,11 +1,12 @@
 let playerX = 300;
 let playerY = 200;
-let playerXSpeed = 5;
-let playerYSpeed = 7;
+let playerXSpeed = 10;
+let playerYSpeed = 10;
+let playerR = 15;
 
 function testBevægelse(){
     fill('red')
-    circle(playerX, playerY, 30);
+    circle(playerX, playerY, playerR*2);
     if(keyIsDown(65)){ //left
         playerX -= playerXSpeed;
     }
