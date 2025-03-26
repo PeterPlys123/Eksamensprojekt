@@ -1,18 +1,20 @@
-let i
-function trampBlok(pSpeed){
-let trampVel = pSpeed
-while(i < 10){
-playerY-= trampVel + 10
-i++
-}
-
+function trampBlok(){
+    if(playerY <= 370){
+        playerY+=10
+    }
+    else if(playerY >= 370){
+        playerY=390
+    }
 }
 
 
 function dltBlok(){
-
-
-
+    if(playerY <= 370){
+        playerY=350
+    }
+    else if(playerY >= 370){
+        playerY=390
+    }
 }
 
 
