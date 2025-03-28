@@ -3,6 +3,7 @@ let playerY = 200;
 let playerXSpeed = 10;
 let playerYSpeed = 10;
 let playerR = 15;
+let playerXVelocity
 
 function testBevægelse(){
     fill('red')
