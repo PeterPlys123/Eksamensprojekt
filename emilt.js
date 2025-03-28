@@ -1,5 +1,5 @@
-let cnvwidth;
-let cnvheight;
+let cnvWidth;
+let cnvHeight;
 let cnv; //canvas
 
 let playerD = 60;
@@ -8,8 +8,10 @@ let playerX;
 let playerY;
 
 let playerYVelocity = 0;
+let playerXVelocity = 0;
 let playerXSpeed = 7;
-let playerYSpeed = 7;
+let playerYSpeed = 10;
+
 let playerJumpSpeed = 10;
 let playerJumpSpeedTotal = playerJumpSpeed;
 let playerJumpMax = 30; //Max højde på hop
@@ -18,29 +20,30 @@ let isJumpReleased;
 let isJumpDownAcc = 20 / 120;
 
 let playerGravityAcc = 0.5; //Pixels per frame acceleration
+let playerGravityMax = 20;
 let playerGround;
 
 let scroll;
 
 function setup(){
-    cnvheight = windowHeight - 100
-    cnvwidth = windowWidth - 100
+    cnvHeight = windowHeight - 100
+    cnvWidth = windowWidth - 100
 
-    playerX = cnvwidth / 2
-    playerY = cnvheight / 2
+    playerX = cnvWidth / 2
+    playerY = cnvHeight / 2
 
-    playerGround = cnvheight - 100;
+    playerGround = 599;
 
     frameRate(60)
 
-    cnv = createCanvas(cnvwidth, cnvheight);
-    cnv.position(windowWidth - (windowWidth + cnvwidth) / 2, 0) //centrere canvas
+    cnv = createCanvas(cnvWidth, cnvHeight);
+    cnv.position(windowWidth - (windowWidth + cnvWidth) / 2, 0) //centrere canvas
     scroll = 0
 }
 
 function playerGravity(){
-    if(playerY + playerR < playerGround){
-        playerYVelocity += playerGravityAcc;
+    if(playerY + playerR <= playerGround && playerYVelocity < 25){
+        playerYVelocity += playerGravityAcc; 
         playerY += playerYVelocity;
     } else{
         playerYVelocity = 0;
@@ -50,16 +53,25 @@ function playerGravity(){
 
 function playerMovement(){
     if(keyIsDown(65)){ //left / a
-        playerX -= playerXSpeed;
+        playerXVelocity = playerXSpeed
+        playerX -= playerXVelocity;
     }
     if(keyIsDown(68)){ //right / d
-        playerX += playerXSpeed;
+        playerXVelocity = playerXSpeed
+        playerX += playerXVelocity;
     }
     if(keyIsDown(87) && playerY > height * 0){ //up / w
+
         playerY -= playerYSpeed;
-    } 
+        playerYVelocity = 0;
+        playerGravityAcc = 0;
+    } else{
+        playerGravityAcc = 0.5;
+    }
     if(keyIsDown(83) && playerY < height * 0.9){ //down / s
+        playerYVelocity = playerYSpeed
         playerY += playerYSpeed;
+        
     } 
 }
 
@@ -101,8 +113,8 @@ function verticalScrollAndDrawAll(){
         scroll -= playerYVelocity
         playerY -= playerYVelocity
     }
-    if(playerY > height * 0.9){//For player på vej ned
-        scroll += playerYVelocity
+    if(playerY > height * 0.9 && playerYVelocity > 0){//For player på vej ned
+        scroll -= playerYVelocity
         playerY -= playerYVelocity
     }
 
