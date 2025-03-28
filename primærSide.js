@@ -1,10 +1,13 @@
-let canvas, baggrund, blokArray, farveArray, ground, playerVel
+let canvas, baggrund, bBlokArrayX, farveArray, ground, playerVel, blokBredde, bBlokArrayY, blokTyk
 ground = false
 playerVel = 0
-
+let collision
+blokBredde = 75
+blokTyk = 20
 function setup() {
 	createCanvas(800, 400);
-    blokArray = [20, 140, 260, 380, 500]
+    bBlokArrayX = [20, 140, 260, 380, 500]
+    bBlokArrayY = [100, 20, 300, 270, 185]
     farveArray = ['black', 'red', 'gray', 'yellow', 'lightblue']
     background(170)
 }
@@ -14,36 +17,37 @@ function draw()
     frameRate(50)
     background(170)
     testBevægelse()
-
-if(playerY < 100){
+/*
+if(collision == false){
     ground = false
 }
 
-if(playerY > 0 && ground == false){
+if(ground == false){
 playerY+=playerVel
 playerVel+=0.5
-//constrain(playerVel, 0, 4)
+
 }
+else{
+playerVel=0
+}
+*/
 
-    for(let i = 0; i < blokArray.length; i++)
+
+
+    for(let i = 0; i < bBlokArrayX.length; i++)
         {
-        fill(farveArray[i])
-        rect(blokArray[i], 360, 75, 20)
+        fill(farveArray[2])
+        rect(bBlokArrayX[i], bBlokArrayY [i], blokBredde, blokTyk)
         }
 
-    if(playerY + 15 > 360 && playerY - 15 < 380){
-        if(playerX > blokArray[0]-playerR && playerX < blokArray[0] + 75 + playerR){
-            trampBlok()
+for(let i = 0; i < bBlokArrayY.length; i++){
+    if(playerY + playerR > bBlokArrayY[i] && playerY - playerR < bBlokArrayY[i]){
+        console.log(i)
+        for(let k = 0; k < bBlokArrayX.length; k++){
+            if(playerX + playerR > bBlokArrayX[k] && playerX - playerR <bBlokArrayX[k]){
+                blok(bBlokArrayY[k])
+            }
         }
-
-        if(playerX > blokArray[1]-playerR && playerX < blokArray[1]+ 75 + playerR){
-            dltBlok()
-        }
-
-        if(playerX > blokArray[2]-playerR && playerX < blokArray[2]+ 75 + playerR){
-            blok()
-            
-        }
-        ground = true
     }
+}
 }
