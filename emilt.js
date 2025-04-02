@@ -32,7 +32,7 @@ function setup(){
     playerX = cnvWidth / 2
     playerY = cnvHeight / 2
 
-    playerGround = 599;
+    playerGround = 500;
 
     frameRate(60)
 
@@ -103,7 +103,7 @@ function drawPlayer(){
     circle(playerX, playerY, playerD);
 }
   
-function verticalScrollAndDrawAll(){
+function verticalScroll(){
 
     playerJump();
     playerMovement();
@@ -132,7 +132,7 @@ function verticalScrollAndDrawAll(){
 
 function draw(){
     background(200);
-    verticalScrollAndDrawAll();
+    verticalScroll();
     //playerMovement();
     //playerGravity();
 
