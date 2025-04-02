@@ -14,7 +14,7 @@ function dltBlok(){
         ground = true
         collision = true
     }
-    else if(playerY >= 370){
+    if(playerY >= 370){
         playerY=395
     }
 }
@@ -22,13 +22,12 @@ function dltBlok(){
 
 function blok(x){
     console.log(x)
-    if(playerY <= 370){
-        playerY=345
+    if(playerY <= bBlokArrayY[x]){
+        playerY-=25
         ground = true
-        collision = true
     }
-    else if(playerY >= 370){
-        playerY=395
+    if(playerY >= bBlokArrayY[x] - 20){
+        playerY+=25
     }
 }
 
