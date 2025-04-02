@@ -1,6 +1,6 @@
 let playerX = 300;
 let playerY = 200;
-let playerXSpeed = 10;
+let playerXSpeed = 5;
 let playerYSpeed = 10;
 let playerR = 15;
 let playerXVelocity

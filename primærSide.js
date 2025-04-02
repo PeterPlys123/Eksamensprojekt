@@ -18,19 +18,20 @@ function draw()
     background(170)
     testBevægelse()
 /*
-if(collision == false){
+if(collision !== false){
     ground = false
 }
 
 if(ground == false){
 playerY+=playerVel
-playerVel+=0.5
+playerVel+=0.2
 
 }
 else{
 playerVel=0
 }
 */
+
 
 
 
@@ -41,13 +42,8 @@ playerVel=0
         }
 
 for(let i = 0; i < bBlokArrayY.length; i++){
-    if(playerY + playerR > bBlokArrayY[i] && playerY - playerR < bBlokArrayY[i]){
-        console.log(i)
-        for(let k = 0; k < bBlokArrayX.length; k++){
-            if(playerX + playerR > bBlokArrayX[k] && playerX - playerR <bBlokArrayX[k]){
-                blok(bBlokArrayY[k])
+    if(playerY + playerR > bBlokArrayY[i] && playerY - playerR < bBlokArrayY[i] && playerX + playerR > bBlokArrayX[i] && playerX - playerR <bBlokArrayX[i] + blokBredde){
+                blok(i)
             }
         }
     }
-}
-}
