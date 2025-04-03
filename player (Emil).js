@@ -28,7 +28,7 @@ function playerGravity(){
     }
 }
 
-function playerGodMovement(){
+function playerGodMode(){
     if(keyIsDown(87) && playerY > height * 0){ //up / w
 
         playerY -= playerYSpeed;

@@ -122,6 +122,8 @@ function verticalScroll(){
     //Det vil sige alt hvad der sidder fast på canvas 
     translate (0, scroll)
 
+    
+
     circle(300,300,50);
 
     pop();
