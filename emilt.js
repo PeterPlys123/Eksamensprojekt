@@ -1,146 +1,94 @@
-    let cnvWidth;
-    let cnvHeight;
-    let cnv; //canvas
+let cnvWidth;
+let cnvHeight;
+let cnv; // Canvas
 
-    let playerD = 60;
-    let playerR = playerD / 2
-    let playerX;
-    let playerY;
+let playerD = 60;
+let playerR = playerD / 2;
+let playerX;
+let playerY;
 
-    let playerYVelocity = 0;
-    let playerXVelocity = 0;
-    let playerXSpeed = 7;
-    let playerYSpeed = 10;
+let playerYVelocity = 0;
+let playerXVelocity = 0;
+let playerXSpeed = 7;
+let playerYSpeed = 10;
 
-    let playerJumpSpeed = 10;
-    let playerJumpSpeedTotal = playerJumpSpeed;
-    let playerJumpMax = 30; //Max højde på hop
-    let isJumpDown = false;
-    let isJumpReleased;
-    let isJumpDownAcc = 20 / 120;
+let playerJumpSpeed = 10;
+let playerJumpSpeedTotal = playerJumpSpeed;
+let playerJumpMax = 30; // Max højde på hop
+let isJumpDown = false;
+let isJumpReleased;
+let isJumpDownAcc = 20 / 120;
 
-    let playerGravityAcc = 0.5; //Pixels per frame acceleration
-    let playerGravityMax = 20;
-    let playerGround;
+let playerGravityAcc = 0.5; // Pixels per frame acceleration
+let playerGravityMax = 20;
+let playerGround = 500;
 
-    let scroll;
+let scroll;
+let isGodMode = false; // Aktiverer God Mode
 
-    function setup(){
-        cnvHeight = windowHeight - 100
-        cnvWidth = windowWidth - 100
+function setupGame() {
+    cnvHeight = windowHeight - 100;
+    cnvWidth = windowWidth - 100;
 
-        playerX = cnvWidth / 2
-        playerY = cnvHeight / 2
+    playerX = cnvWidth / 2;
+    playerY = cnvHeight / 2;
 
-        playerGround = 500;
+    frameRate(60);
 
-        frameRate(60)
+    cnv = createCanvas(cnvWidth, cnvHeight);
+    cnv.position(windowWidth - (windowWidth + cnvWidth) / 2, 0); // Centrere canvas
+    scroll = 0;
+}
 
-        cnv = createCanvas(cnvWidth, cnvHeight);
-        cnv.position(windowWidth - (windowWidth + cnvWidth) / 2, 0) //centrere canvas
-        scroll = 0
+
+
+function drawPlayer() {
+    circle(playerX, playerY, playerD);
+}
+
+function drawAllNonPlayer() {
+    line(0, playerGround, cnvWidth, playerGround);
+}
+
+function verticalScroll() {
+    if (isGodMode == false) {
+        peformJump();
+        applyGravity();
     }
+    playerMovement();
 
-    function playerGravity(){
-        if(playerY + playerR <= playerGround && playerYVelocity < 25){
-            playerYVelocity += playerGravityAcc; 
-            playerY += playerYVelocity;
-        } else{
-            playerYVelocity = 0;
-        }
-    }
-
-
-    function playerMovement(){
-        if(keyIsDown(65)){ //left / a
-            playerXVelocity = playerXSpeed
-            playerX -= playerXVelocity;
-        }
-        if(keyIsDown(68)){ //right / d
-            playerXVelocity = playerXSpeed
-            playerX += playerXVelocity;
-        }
-        if(keyIsDown(87) && playerY > height * 0){ //up / w
-
-            playerY -= playerYSpeed;
-            playerYVelocity = 0;
-            playerGravityAcc = 0;
-        } else{
-            playerGravityAcc = 0.5;
-        }
-        if(keyIsDown(83) && playerY < height * 0.95){ //down / s
-            playerYVelocity = playerYSpeed;
+    if (isGodMode == true) {
+        // Scroll når spilleren flyver i God Mode
+        if (playerY < height * 0.1) {
+            scroll += playerYSpeed; // Ryk op
             playerY += playerYSpeed;
-            
-        } 
-    }
-
-    function keyPressed(){
-        if(keyCode === 32){
-            isJumpDown = true;
-            isJumpReleased = false;
-        } 
-    }
-    function keyReleased(){
-        if(keyCode === 32){
-            isJumpDown = false;
-            isJumpReleased = true;
+        }
+        if (playerY > height * 0.9) {
+            scroll -= playerYSpeed; // Ryk ned
+            playerY -= playerYSpeed;
+        }
+    } else {
+        // Normal scrolling (baseret på tyngdekraft)
+        if (playerY < height * 0.1 && playerYVelocity < 0) { 
+            scroll -= playerYVelocity;
+            playerY -= playerYVelocity;
+        }
+        if (playerY > height * 0.9 && playerYVelocity > 0) { 
+            scroll -= playerYVelocity;
+            playerY -= playerYVelocity;
         }
     }
 
-    function playerJump(){
-    if(isJumpDown == true && playerJumpSpeedTotal < playerJumpMax){
-            playerJumpSpeedTotal += isJumpDownAcc 
-    } else if(playerY + playerR >= playerGround && isJumpReleased == true){
-            playerYVelocity -= playerJumpSpeedTotal;
-            playerY += playerYVelocity;
-            playerJumpSpeedTotal = playerJumpSpeed;
-            isJumpReleased = false;
-    }
-    }
+    push(); ////Alt hvad der skal "bevæge" sig når spilleren hopper op og falder ned skal være mellem push og pop
+    //Det vil sige alt hvad der sidder fast på canvas 
 
-    function drawPlayer(){
-        circle(playerX, playerY, playerD);
-    }
-    
+    translate(0, scroll);  // Apply scroll translation
 
-    function drawAllNP(){
+    circle(300, 300, 50);  // Cirkel
+    drawAllNonPlayer();
 
-    }
+    pop();
 
+    drawPlayer();
+}
 
-    function verticalScroll(){
-
-        playerJump();
-        playerMovement();
-        playerGravity();
-
-        if(playerY < height * 0.1 && playerYVelocity < 0){//For player på vej op
-            scroll -= playerYVelocity
-            playerY -= playerYVelocity
-        }
-        if(playerY > height * 0.9 && playerYVelocity > 0){//For player på vej ned
-            scroll -= playerYVelocity
-            playerY -= playerYVelocity
-        }
-
-        push(); //Alt hvad der skal "bevæge" sig når spilleren hopper op og falder ned skal være mellem push og pop
-        //Det vil sige alt hvad der sidder fast på canvas 
-        translate (0, scroll);
-
-
-        circle(300,300,50);
-
-        pop();
-
-        drawPlayer();
-    }
-
-
-    function draw(){
-        background(200);
-        verticalScroll();
-        //playerMovement();
-        //playerGravity();
-
-    }
