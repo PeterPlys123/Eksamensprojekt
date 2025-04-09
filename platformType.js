@@ -21,17 +21,15 @@ function dltBlok(){
 
 
 function bBlok(x){     
-    if(playerY<= bBlokArrayY[x]){
-        playerY=playerY
+    if(playerY <= bBlokArrayY[x]){
         ground = true
-        console.log(ground)
-        playerVel=0
+        playerVelY = 0
     }
-    if(playerX + playerR < bBlokArrayX[x] || playerX - playerR > bBlokArrayX[x] + blokBredde){
-        ground = false
-        console.log('a')
+    if(playerY >= bBlokArrayY[x]){
+        playerVelY = 1
     }
-}
+    }
+
 
 
 function sandBlok(){
@@ -46,13 +44,15 @@ function sandBlok(){
 }
 
 
-function isBlok(){
-    if(playerY <= 370){
-        playerY=345
+function isBlok(x){
+    if(playerY <= isBlokArrayY[x]){
+        playerX -= playerVelX * 0.7
+        playerVelX *= 0.8
+
         ground = true
-        collision = true
+        playerVelY = 0
     }
-    else if(playerY >= 370){
-        playerY=395
+    if(playerY >= isBlokArrayY[x]){
+        playerVelY = 1
     }
 }
