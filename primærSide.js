@@ -15,20 +15,21 @@ function setup() {
 
 function draw()
 {
-    kollision()
-    frameRate(50)
+    frameRate(45)
     background('lightgreen')
     testBevægelse()
 
 
-if(ground !== true){
-    playerVel+=0.5
-    playerY+=playerVel
-}
+
 if(ground == true){
     playerVel=0
-    console.log('Hej')
 }
+
+else if(ground == false){
+playerVel+=0.5
+playerY+=playerVel
+}
+
 
 
 for(let i = 0; i < bBlokArrayX.length; i++)
@@ -37,14 +38,12 @@ for(let i = 0; i < bBlokArrayX.length; i++)
     rect(bBlokArrayX[i], bBlokArrayY [i], blokBredde, blokTyk)
     }
 
+    
     for(let i = 0; i < bBlokArrayY.length; i++){
         if(playerY + playerR > bBlokArrayY[i] && playerY - playerR < bBlokArrayY[i]){
             if(playerX + playerR > bBlokArrayX[i] && playerX - playerR <bBlokArrayX[i] + blokBredde){
                 bBlok(i)
             }
-        }
-        if(playerY - playerR > bBlokArrayY[i] || playerX + playerR < bBlokArrayX[i] || playerX + playerR > bBlokArrayX[i] + blokBredde){
-            ground = false
         }
     }
     }

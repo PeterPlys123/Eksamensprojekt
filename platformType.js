@@ -21,14 +21,15 @@ function dltBlok(){
 
 
 function bBlok(x){     
-    if(playerY <= bBlokArrayY[x]){
-        playerY-=20
+    if(playerY<= bBlokArrayY[x]){
+        playerY=playerY
         ground = true
-        playerVel=0  
+        console.log(ground)
+        playerVel=0
     }
-    
-    if(playerY >= bBlokArrayY[x] - 20){
-        playerY+=25
+    if(playerX + playerR < bBlokArrayX[x] || playerX - playerR > bBlokArrayX[x] + blokBredde){
+        ground = false
+        console.log('a')
     }
 }
 
