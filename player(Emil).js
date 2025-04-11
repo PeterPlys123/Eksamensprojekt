@@ -1,3 +1,23 @@
+let playerD = 60;
+let playerR = playerD / 2;
+let playerX, playerY;
+
+let playerYVelocity = 0;
+let playerXVelocity = 0;
+let playerXSpeed = 7;
+let playerYSpeed = 10;
+
+let playerJumpSpeed = 10;
+let playerJumpSpeedTotal = playerJumpSpeed;
+let playerJumpMax = 30; // Max højde på hop
+let isJumpDown = false;
+let isJumpReleased;
+let isJumpDownAcc = 20 / 120;
+
+let playerGravityAcc = 0.5; // Pixels per frame acceleration
+let playerGravityMax = 20;
+let playerGround = 500;
+
 function applyGravity() {
     if (isGodMode == false) {
         // Juster playerGround med scrollen
@@ -38,16 +58,15 @@ function keyPressed() {
     }
 }
 
-function keyReleased() {
+function keyReleased() { // Når knappen slippes så hopper man
     if (keyCode === 32) {
         isJumpDown = false;
         isJumpReleased = true;
     }
 }
 
-function peformJump() {
+function peformJump() { // Hop funktion
     if (isGodMode == false) {
-        // Juster jump baseret på verdensposition
         if (isJumpDown == true && playerJumpSpeedTotal < playerJumpMax) {
             playerJumpSpeedTotal += isJumpDownAcc; 
         } else if (playerY + playerR >= playerGround + scroll && isJumpReleased == true) {
@@ -58,3 +77,4 @@ function peformJump() {
         }
     }
 }
+

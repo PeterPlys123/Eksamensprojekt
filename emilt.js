@@ -1,30 +1,13 @@
-let cnvWidth;
-let cnvHeight;
-let cnv; // Canvas
-
-let playerD = 60;
-let playerR = playerD / 2;
-let playerX;
-let playerY;
-
-let playerYVelocity = 0;
-let playerXVelocity = 0;
-let playerXSpeed = 7;
-let playerYSpeed = 10;
-
-let playerJumpSpeed = 10;
-let playerJumpSpeedTotal = playerJumpSpeed;
-let playerJumpMax = 30; // Max højde på hop
-let isJumpDown = false;
-let isJumpReleased;
-let isJumpDownAcc = 20 / 120;
-
-let playerGravityAcc = 0.5; // Pixels per frame acceleration
-let playerGravityMax = 20;
-let playerGround = 500;
+let cnvWidth, cnvHeight, cnv; // Canvas
 
 let scroll;
-let isGodMode = false; // Aktiverer God Mode
+let isGodMode = false; // God Mode toggle
+
+let img;
+
+function preload(){
+    img = loadImage('skyBackground.jpg')
+}
 
 function setupGame() {
     cnvHeight = windowHeight - 100;
@@ -50,7 +33,7 @@ function drawAllNonPlayer() {
     line(0, playerGround, cnvWidth, playerGround);
 }
 
-function verticalScroll() {
+function verticalScrollandDraw() {
     if (isGodMode == false) {
         peformJump();
         applyGravity();
@@ -81,7 +64,6 @@ function verticalScroll() {
 
     push(); ////Alt hvad der skal "bevæge" sig når spilleren hopper op og falder ned skal være mellem push og pop
     //Det vil sige alt hvad der sidder fast på canvas 
-
     translate(0, scroll);  // Apply scroll translation
 
     circle(300, 300, 50);  // Cirkel
@@ -92,3 +74,11 @@ function verticalScroll() {
     drawPlayer();
 }
 
+function setup(){
+    setupGame();
+}
+
+function draw(){
+    image(img, 0, 0, width, height)
+    verticalScrollandDraw();
+}
