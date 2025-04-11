@@ -1,58 +1,71 @@
-function trampBlok(){
-    if(playerY <= 370){
-        playerY+=10
-    }
-    else if(playerY >= 370){
-        playerY=390
-    }
+function trampBlok(x)
+{
+    if(playerY <= trampBlokArrayY[x])
+        {
+            playerVelY = trampHop
+        }
+        if(playerY >= trampBlokArrayY[x])
+        {
+            playerVelY = blokKolStop
+        }
 }
 
 
-function dltBlok(){
-    if(playerY <= 370){
-        playerY=345
-        ground = true
-        collision = true
-    }
-    if(playerY >= 370){
-        playerY=395
-    }
+function fældeBlok()
+{
+        //Der er ingen kollision over, da det er meningen man skal falde igennem.
+
+        //Her kigges der for kollision mens spilleren er under.
+        if(playerY >= fældeBlokArrayY[x])
+        {
+            playerVelY = blokKolStop
+        }
 }
 
 
-function bBlok(x){     
-    if(playerY <= bBlokArrayY[x]){
+function bBlok(x)
+{   
+    //Her kigges der for, hvis kollisionen er mens spilleren er over blokken.
+    if(playerY <= bBlokArrayY[x])
+    {
         ground = true
         playerVelY = 0
     }
-    if(playerY >= bBlokArrayY[x]){
-        playerVelY = 1
-    }
-    }
-
-
-
-function sandBlok(){
-    if(playerY <= 370){
-        playerY=345
-        ground = true
-        collision = true
-    }
-    else if(playerY >= 370){
-        playerY=395
+    //Her kigges der for kollision mens spilleren er under.
+    if(playerY >= bBlokArrayY[x])
+    {
+        playerVelY = blokKolStop
     }
 }
 
 
-function isBlok(x){
-    if(playerY <= isBlokArrayY[x]){
-        playerX -= playerVelX * 0.7
-        playerVelX *= 0.8
+
+function sandBlok(x)
+{
+    if(playerY <= sandBlokArrayY[x])
+    {
+        ground = true
+        playerVelY = 0
+    }
+    if(playerY >= sandBlokArrayY[x])
+    {
+        playerVelY = blokKolStop
+    }
+}
+
+
+function isBlok(x)
+{
+    if(playerY <= speedBlokArrayY[x])
+    {
+        playerX -= playerVelX * 0.5
+        playerVelX -= 1
 
         ground = true
         playerVelY = 0
     }
-    if(playerY >= isBlokArrayY[x]){
-        playerVelY = 1
+    if(playerY >= speedBlokArrayY[x])
+    {
+        playerVelY = blokKolStop
     }
 }
