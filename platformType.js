@@ -2,11 +2,11 @@ function trampBlok(x)
 {
     if(playerY <= trampBlokArrayY[x])
         {
-            playerVelY = trampHop
+            playerYVelocity = trampHop
         }
         if(playerY >= trampBlokArrayY[x])
         {
-            playerVelY = blokKolStop
+            playerYVelocity = blokKolStop
         }
 }
 
@@ -18,7 +18,7 @@ function fældeBlok()
         //Her kigges der for kollision mens spilleren er under.
         if(playerY >= fældeBlokArrayY[x])
         {
-            playerVelY = blokKolStop
+            playerYVelocity = blokKolStop
         }
 }
 
@@ -28,13 +28,13 @@ function bBlok(x)
     //Her kigges der for, hvis kollisionen er mens spilleren er over blokken.
     if(playerY <= bBlokArrayY[x])
     {
-        ground = true
-        playerVelY = 0
+        playerGround = true
+        playerYVelocity = 0
     }
     //Her kigges der for kollision mens spilleren er under.
     if(playerY >= bBlokArrayY[x])
     {
-        playerVelY = blokKolStop
+        playerYVelocity = blokKolStop
     }
 }
 
@@ -44,12 +44,12 @@ function sandBlok(x)
 {
     if(playerY <= sandBlokArrayY[x])
     {
-        ground = true
-        playerVelY = 0
+        playerGround = true
+        playerYVelocity = 0
     }
     if(playerY >= sandBlokArrayY[x])
     {
-        playerVelY = blokKolStop
+        playerYVelocity = blokKolStop
     }
 }
 
@@ -58,14 +58,14 @@ function isBlok(x)
 {
     if(playerY <= speedBlokArrayY[x])
     {
-        playerX -= playerVelX * 0.5
-        playerVelX -= 1
+        playerX -= playerXVelocity * 0.5
+        playerXVelocity -= 1
 
-        ground = true
-        playerVelY = 0
+        playerGround = true
+        playerYVelocity = 0
     }
     if(playerY >= speedBlokArrayY[x])
     {
-        playerVelY = blokKolStop
+        playerYVelocity = blokKolStop
     }
 }

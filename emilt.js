@@ -35,7 +35,7 @@ function drawAllNonPlayer() {
 
 function verticalScrollandDraw() {
     if (isGodMode == false) {
-        peformJump();
+        performJump();
         applyGravity();
     }
     playerMovement();
@@ -79,6 +79,7 @@ function setup(){
 }
 
 function draw(){
-    image(img, 0, 0, width, height)<
+    image(img, 0, 0, width, height)
     verticalScrollandDraw();
 }
+

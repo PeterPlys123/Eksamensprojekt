@@ -65,7 +65,7 @@ function keyReleased() { // Når knappen slippes så hopper man
     }
 }
 
-function peformJump() { // Hop funktion
+function performJump() { // Hop funktion
     if (isGodMode == false) {
         if (isJumpDown == true && playerJumpSpeedTotal < playerJumpMax) {
             playerJumpSpeedTotal += isJumpDownAcc; 
@@ -77,4 +77,3 @@ function peformJump() { // Hop funktion
         }
     }
 }
-

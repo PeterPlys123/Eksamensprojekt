@@ -1,10 +1,10 @@
 let pPlayerX,
 newPlayerX,
 hastighed,
-playerVelX
+playerXVelocity
 
-let ground = false
-let playerVelY = 0
+let playerGround = false
+let playerYVelocity = 0
 let collision
 let blokBredde = 75
 let blokTyk = 20
@@ -45,15 +45,15 @@ function draw()
     //Hastighed til at glide på isblokkene.
     pPlayerX = newPlayerX
     newPlayerX = playerX
-    playerVelX = pPlayerX - newPlayerX
+    playerXVelocity = pPlayerX - newPlayerX
 
     //Tyngdekraft
     //Fungere ved at der er en ground, som skifter mellem true og false.
     //Når der er kollision med en platform er den true, og når man hopper, eller går over kanten er den false.
-if(ground == false)
+if(playerGround == false)
 {
-playerVelY += 0.5
-playerY += playerVelY
+playerYVelocity += 0.5
+playerY += playerYVelocity
 }
 
 //Her tegnes basis blokkene
@@ -74,7 +74,7 @@ for(let i = 0; i < bBlokArrayX.length; i++)
             }
             else
             {
-                ground = false
+                playerGround = false
             }
         }
     }
@@ -97,7 +97,7 @@ for(let i = 0; i < bBlokArrayX.length; i++)
                 }
                 else
                 {
-                    ground = false
+                    playerGround = false
                 }
             }
         }
@@ -120,7 +120,7 @@ for(let i = 0; i < sandBlokArrayX.length; i++)
             }
             else
             {
-                ground = false
+                playerGround = false
             }
         }
     }
@@ -143,7 +143,7 @@ for(let i = 0; i < sandBlokArrayX.length; i++)
                 }
                 else
                 {
-                    ground = false
+                    playerGround = false
                 }
             }
         }
@@ -166,7 +166,7 @@ for(let i = 0; i < sandBlokArrayX.length; i++)
                     }
                     else
                     {
-                        ground = false
+                        playerGround = false
                     }
                 }
             }

@@ -13,9 +13,9 @@ function testBevægelse(){
     if(keyIsDown(68)){ //right
         playerX += playerXSpeed;
     }
-    if(keyIsDown(87) && ground == true){
-        playerVelY -= playerYSpeed 
-        playerY += playerVelY
-        ground = false
+    if(keyIsDown(87) && playerGround == true){
+        playerYVelocity -= playerYSpeed 
+        playerY += playerYVelocity
+        playerGround = false
     }
 }
