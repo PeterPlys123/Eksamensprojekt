@@ -84,6 +84,8 @@ function verticalScrollandDraw() {
     }
     playerMovement();
 
+    
+
     if (isGodMode == true) {
         // Scroll når spilleren flyver i God Mode
         if (playerY < height * 0.1) {
@@ -117,6 +119,9 @@ function verticalScrollandDraw() {
     rect(0, 900, cnvWidth, 100000)
 
     madsDraw();
+
+    drawWind(); // Tegn vindanimationen
+    applyWind(); // Anvend vindens effekt på spilleren
 
     pop();
 
@@ -192,6 +197,39 @@ function performJump() { // Hop funktion
         }
     }
 }
+
+// --Vind--
+function applyWind() {
+    // Definer vindsektionens område
+    let windStartX = 200; // Start X-position for vindsektionen
+    let windEndX = 400;   // Slut X-position for vindsektionen
+    let windStrength = 2; // Hvor meget spilleren skubbes per frame
+
+    // Hvis spilleren er inden for vindsektionen, skub til siden
+    if (playerX > windStartX && playerX < windEndX) {
+        playerX += windStrength; // Skub spilleren mod højre
+    }
+}
+
+function drawWind() {
+    let windStartX = 200; // Start X-position for vindsektionen
+    let windEndX = 400;   // Slut X-position for vindsektionen
+    let windYStart = 0;   // Start Y-position for vindanimationen
+    let windYEnd = height; // Slut Y-position for vindanimationen
+    let windSpeed = 5;    // Hastighed for vindens bevægelse
+
+    stroke('white');
+    strokeWeight(2);
+
+    // Tegn linjer, der bevæger sig mod højre
+    for (let y = windYStart; y < windYEnd; y += 30) {
+        let offset = (frameCount * windSpeed) % (windEndX - windStartX); // Bevægelse mod højre
+        line(windStartX + offset, y, windStartX + offset + 20, y + 10); // Skrå linje
+    }
+
+    noStroke();
+}
+
 
 
 // --primærSide.js--
@@ -405,6 +443,7 @@ function setup(){
 
 function draw(){
     background('#33a2ff');
+
     verticalScrollandDraw();
-    console.log('ground', playerGround, 'p', playerGroundP, 'scroll', scroll)
+    //console.log('ground', playerGround, 'p', playerGroundP, 'scroll', scroll)
 }
