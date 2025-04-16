@@ -22,7 +22,7 @@ let isJumpReleased;
 let isJumpDownAcc = 20 / 120;
 
 let playerGravityAcc = 0.5; // Pixels per frame acceleration
-let playerGravityMax = 20;
+let playerGravityMax = 30;
 let playerGround = false;
 
 
@@ -132,7 +132,7 @@ function applyGravity() {
         playerGround = false
     }
     if (isGodMode == false) {
-        if (playerGround == true || playerGroundP == true) {
+        if (playerGround == true /*|| playerGroundP == true*/) {
             // Spilleren er på jorden eller platformen, stop tyngdekraften
             playerYVelocity = 0;
         } else {
@@ -353,13 +353,13 @@ function fældeBlok()
 function bBlok(x)
 {   
     //Her kigges der for, hvis kollisionen er mens spilleren er over blokken.
-    if(playerY + playerR <= bBlokArrayY[x] + scroll)
+    if(playerY <= bBlokArrayY[x] + scroll)
     {
         playerGroundP = true
-        playerYVelocity = 0
+        playerYVelocity = -playerGravityAcc
     }
     //Her kigges der for kollision mens spilleren er under.
-    if(playerY + playerR >= bBlokArrayY[x] + scroll)
+    if(playerY >= bBlokArrayY[x] + scroll)
     {
         playerYVelocity = blokKolStop
     }
@@ -389,7 +389,7 @@ function isBlok(x)
         playerXVelocity -= 1
 
         playerGroundP = true
-        playerYVelocity = 0
+        playerYVelocity = -playerGravityAcc
     }
     if(playerY >= speedBlokArrayY[x] + scroll)
     {
