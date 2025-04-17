@@ -25,6 +25,24 @@ let playerGravityAcc = 0.5; // Pixels per frame acceleration
 let playerGravityMax = 30;
 let playerGround = false;
 
+let windStartX = 0; // Start X-position for vindsektionen
+let windEndX;   // Slut X-position for vindsektionen
+let windYStart = -800;   // Start Y-position for vindanimationen, skal have mindre værdi en slut Y
+let windYEnd = -300; // Slut Y-position for vindanimationen
+let windSpeed = 5;    // Hastighed for vindens bevægelse
+let windStrength = 4; // Hvor meget spilleren skubbes per frame
+
+// --Nye variabler til startknap, nedtælling og timer--
+let isGameStarted = false; // Spillet er ikke startet endnu
+let countdown = 3; // Nedtælling starter fra 3
+let timer = 0; // Spiltimer
+let countdownInterval; // Interval til nedtælling
+let gameTimerInterval; // Interval til spillets timer
+let startButton;
+
+// --Nye variabler til slutmål--
+let goalX, goalY, goalWidth, goalHeight; // Position og størrelse for målet
+let isGameOver = false; // Spillet er ikke slut endnu
 
 let pPlayerX,
 newPlayerX
@@ -62,17 +80,33 @@ function setupGame() {
 
     playerX = cnvWidth / 2;
     playerY = cnvHeight / 2;
+    windEndX= cnvWidth;
+
 
     frameRate(60);
 
     cnv = createCanvas(cnvWidth, cnvHeight);
     cnv.position(windowWidth - (windowWidth + cnvWidth) / 2, 0); // Centrere canvas
     scroll = 0;
+
+    // Opret startknap
+    startButton = createButton('Starter');
+    startButton.position(cnvWidth / 2 - 50, cnvHeight / 2 - 25);
+    startButton.size(100, 50);
+    startButton.style('font-size', '20px');
+    startButton.mousePressed(startGame);
+
+    // Initialiser slutmålet
+    goalX = cnvWidth / 2; // Placer målet tæt på højre side
+    goalY = -500; // Placer målet et sted på banen
+    goalWidth = 50;
+    goalHeight = 100;
 }
 
 
-
 function drawPlayer() {
+    stroke('black');
+    strokeWeight(2);
     circle(playerX, playerY, playerD);
 }
 
@@ -118,10 +152,13 @@ function verticalScrollandDraw() {
     fill('#836539');
     rect(0, 900, cnvWidth, 100000)
 
+    playerGroundP = false
     madsDraw();
 
+    if (isGodMode == false){
+        applyWind(); // Anvend vindens effekt på spilleren
+    }
     drawWind(); // Tegn vindanimationen
-    applyWind(); // Anvend vindens effekt på spilleren
 
     pop();
 
@@ -200,31 +237,28 @@ function performJump() { // Hop funktion
 
 // --Vind--
 function applyWind() {
-    // Definer vindsektionens område
-    let windStartX = 200; // Start X-position for vindsektionen
-    let windEndX = 400;   // Slut X-position for vindsektionen
-    let windStrength = 2; // Hvor meget spilleren skubbes per frame
+    // Juster vindsektionens grænser med scroll
+    let adjustedWindYStart = windYStart + scroll;
+    let adjustedWindYEnd = windYEnd + scroll;
 
     // Hvis spilleren er inden for vindsektionen, skub til siden
-    if (playerX > windStartX && playerX < windEndX) {
+    if (playerY > adjustedWindYStart && playerY < adjustedWindYEnd) {
         playerX += windStrength; // Skub spilleren mod højre
     }
 }
 
 function drawWind() {
-    let windStartX = 200; // Start X-position for vindsektionen
-    let windEndX = 400;   // Slut X-position for vindsektionen
-    let windYStart = 0;   // Start Y-position for vindanimationen
-    let windYEnd = height; // Slut Y-position for vindanimationen
-    let windSpeed = 5;    // Hastighed for vindens bevægelse
-
     stroke('white');
     strokeWeight(2);
 
+
     // Tegn linjer, der bevæger sig mod højre
-    for (let y = windYStart; y < windYEnd; y += 30) {
-        let offset = (frameCount * windSpeed) % (windEndX - windStartX); // Bevægelse mod højre
-        line(windStartX + offset, y, windStartX + offset + 20, y + 10); // Skrå linje
+    for (let i = 0; i < 2000; i += 70) {
+        for (let y = windYStart; y < windYEnd; y += 60) {
+            let offset = (frameCount * windSpeed) % (windEndX - windStartX); // Bevægelse mod højre
+            line(windStartX + offset - i, y, windStartX + offset + 20 - i, y + 10); // Skrå linje
+            line(windStartX + offset + i, y, windStartX + offset + 20 + i, y + 10);
+        }
     }
 
     noStroke();
@@ -376,7 +410,7 @@ function trampBlok(x)
 }
 
 
-function fældeBlok()
+function fældeBlok(x)
 {
         //Der er ingen kollision over, da det er meningen man skal falde igennem.
 
@@ -436,6 +470,95 @@ function isBlok(x)
 }
 
 
+// --Start spil--
+function startGame() {
+
+
+    // Start nedtælling
+    countdownInterval = setInterval(() => {
+        countdown--;
+        if (countdown <= 0) {
+            clearInterval(countdownInterval);
+            isGameStarted = true; // Aktiver spillet
+            startTimer(); // Start spillets timer
+            startButton.remove(); // Skjul startknappen
+        }
+    }, 1000);
+}
+function startTimer() {
+    gameTimerInterval = setInterval(() => {
+        timer++;
+    }, 1000);
+}
+function handleGameStartUI() {
+    if (!isGameStarted) {
+        // Vis nedtælling, hvis spillet ikke er startet
+        textSize(32);
+        fill('white');
+        textAlign(CENTER, CENTER);
+        if (countdown > 0) {
+            text('om:' + ' ' + countdown, cnvWidth / 2 + 45, cnvHeight / 2);
+        } else {
+            text('Klar!', cnvWidth / 2, cnvHeight / 2);
+        }
+    } else {
+        // Vis timer øverst på skærmen
+        textSize(24);
+        fill('white');
+        textAlign(LEFT, TOP);
+        text('Tid:' + ' ' + timer + ' ' + 'sek', 10, 10);
+        //Tegn alt
+        verticalScrollandDraw();
+    }
+}
+
+// --Slut spil--
+function handleGoal() {
+    if (isGameOver) {
+        // Vis slutskærm
+        textSize(32);
+        fill('white');
+        textAlign(CENTER, CENTER);
+        text('Spillet er slut!', cnvWidth / 2, cnvHeight / 2 - 50);
+        text('Din tid:' + ' ' + timer + ' ' + 'sek', cnvWidth / 2, cnvHeight / 2);
+    } else {
+        // Tegn flagstangen
+        stroke('black');
+        strokeWeight(4);
+        line(goalX + goalWidth / 2, goalY + scroll, goalX + goalWidth / 2, goalY + scroll - 100);
+
+        // Tegn flaget
+        noStroke();
+        fill('red');
+        triangle(
+            goalX + goalWidth / 2, goalY + scroll - 100, // Toppen af flagstangen
+            goalX + goalWidth / 2 + 40, goalY + scroll - 80, // Højre hjørne af flaget
+            goalX + goalWidth / 2, goalY + scroll - 60 // Bunden af flaget
+        );
+
+        // Tjek for kollision med målet
+        if (
+            playerX + playerR > goalX + goalWidth / 2 - 2 && // Juster til flagstangens bredde
+            playerX - playerR < goalX + goalWidth / 2 + 2 && // Juster til flagstangens bredde
+            playerY + playerR > goalY + scroll - 100 && // Toppen af flagstangen
+            playerY - playerR < goalY + scroll // Bunden af flagstangen
+        ) {
+            isGameOver = true; // Spillet er slut
+            clearInterval(gameTimerInterval); // Stop timeren
+        }
+    }
+}
+function handleGameLogic() {
+    if (!isGameOver) {
+        handleGameStartUI(); // Håndter UI for spilstart og timer
+        if (isGameStarted) {
+            handleGoal(); // Håndter målet
+        }
+    } else {
+        handleGoal(); // Vis slutskærm
+    }
+}
+
 // --Setup og draw--
 function setup(){
     setupGame();
@@ -444,6 +567,6 @@ function setup(){
 function draw(){
     background('#33a2ff');
 
-    verticalScrollandDraw();
-    //console.log('ground', playerGround, 'p', playerGroundP, 'scroll', scroll)
+    handleGameLogic(); // Håndter spillets logik og UI
+    console.log('ground', playerGround, 'p', playerGroundP, 'scroll', scroll)
 }
