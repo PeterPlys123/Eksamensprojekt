@@ -15,7 +15,7 @@ let playerYSpeed = 10;
 
 let playerJumpSpeed = 10;
 let playerJumpSpeedTotal = playerJumpSpeed;
-let playerJumpMax = 20; // Max højde på hop  //Højde = (v^2)/(2*g)
+let playerJumpMax = 20; // Max højde på hop  //Højde = (20^2)/(2*0.35) = 571.43
 let isJumpDown = false;
 let isJumpReleased;
 let isJumpDownAcc = 20 / 120;
@@ -55,7 +55,7 @@ let collision
 let blokBredde = 75
 let blokTyk = 20
 
-let trampHop = -27 //Højde = (v^2)/(2*g)
+let trampHop = -27 //Højde = (v^2)/(2*g) = (27^2)/(2*0.35) = 1041.43
 let blokKolStop = 1
 
 //Basis blok
