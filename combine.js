@@ -4,7 +4,6 @@ let cnvWidth, cnvHeight, cnv; // Canvas
 let scroll;
 let isGodMode = false; // God Mode toggle
 
-
 let playerD = 60;
 let playerR = playerD / 2;
 let playerX, playerY;
@@ -43,6 +42,7 @@ let startButton;
 // --Nye variabler til slutmål--
 let goalX, goalY, goalWidth, goalHeight; // Position og størrelse for målet
 let isGameOver = false; // Spillet er ikke slut endnu
+let restartButton; // Variabel til genstartsknappen
 
 let pPlayerX,
 newPlayerX
@@ -497,7 +497,7 @@ function handleGameStartUI() {
         fill('white');
         textAlign(CENTER, CENTER);
         if (countdown > 0) {
-            text('om:' + ' ' + countdown, cnvWidth / 2 + 45, cnvHeight / 2);
+            text('Starter om:' + ' ' + countdown, cnvWidth / 2 - 5, cnvHeight / 2);
         } else {
             text('Klar!', cnvWidth / 2, cnvHeight / 2);
         }
@@ -512,6 +512,28 @@ function handleGameStartUI() {
     }
 }
 
+// --Genstart spil--
+function restartGame() {
+    // Nulstil spillets variabler
+    isGameOver = false;
+    isGameStarted = false;
+    countdown = 3;
+    timer = 0;
+    scroll = 0;
+    playerX = cnvWidth / 2;
+    playerY = cnvHeight / 2;
+    playerYVelocity = 0;
+
+    // Fjern genstartsknappen
+    if (restartButton) {
+        restartButton.remove();
+        restartButton = null;
+    }
+
+    // Start spillet igen
+    startGame();
+}
+
 // --Slut spil--
 function handleGoal() {
     if (isGameOver) {
@@ -521,6 +543,15 @@ function handleGoal() {
         textAlign(CENTER, CENTER);
         text('Spillet er slut!', cnvWidth / 2, cnvHeight / 2 - 50);
         text('Din tid:' + ' ' + timer + ' ' + 'sek', cnvWidth / 2, cnvHeight / 2);
+
+        // Opret genstartsknap
+        if (!restartButton) {
+            restartButton = createButton('Genstart');
+            restartButton.position(cnvWidth / 2, cnvHeight / 2 + 50);
+            restartButton.size(100, 50);
+            restartButton.style('font-size', '20px');
+            restartButton.mousePressed(restartGame);
+        }
     } else {
         // Tegn flagstangen
         stroke('black');
