@@ -15,10 +15,10 @@ let playerYSpeed = 10;
 
 let playerJumpSpeed = 10;
 let playerJumpSpeedTotal = playerJumpSpeed;
-let playerJumpMax = 20; // Max højde på hop  //Højde = (20^2)/(2*0.35) = 571.43
+let playerJumpMax = 20; // Max højde på hop  //Højde = (20^2)/(2*0.35) = 571.43 pixels
 let isJumpDown = false;
 let isJumpReleased;
-let isJumpDownAcc = 20 / 120;
+let isJumpDownAcc = 20 / 60;
 
 let playerGravityAcc = 0.35; // Pixels per frame acceleration
 let playerGravityMax = 25;
@@ -26,8 +26,8 @@ let playerGround = false;
 
 let windStartX = 0; // Start X-position for vindsektionen
 let windEndX;   // Slut X-position for vindsektionen
-let windYStart = -4000;   // Start Y-position for vindanimationen, skal have mindre værdi en slut Y
-let windYEnd = -3000; // Slut Y-position for vindanimationen
+let windYStart = -8000;   // Start Y-position for vindanimationen, skal have mindre værdi en slut Y
+let windYEnd = -6000; // Slut Y-position for vindanimationen
 let windSpeed = 5;    // Hastighed for vindens bevægelse
 let windStrength = 4; // Hvor meget spilleren skubbes per frame
 
@@ -41,7 +41,7 @@ let startButton;
 
 // --Nye variabler til slutmål--
 let goalX // X for målet
-let goalY = -5000; // Placer målet et sted på banen
+let goalY = -9800; // Placer målet et sted på banen
 let goalWidth = 50;
 let goalHeight = 100;
 let isGameOver = false; // Spillet er ikke slut endnu
@@ -55,33 +55,72 @@ let collision
 let blokBredde = 75
 let blokTyk = 20
 
-let trampHop = -27 //Højde = (v^2)/(2*g) = (27^2)/(2*0.35) = 1041.43
+let trampHop = -29 //Højde = (v^2)/(2*g) = (27^2)/(2*0.35) = 1200 pixels
 let blokKolStop = 1
 
 //Basis blok
 let bBlokArray = [
-    { x: 150, y: 50},
-    {}
+    // Sektion 1
+    { x: 300, y: 200 },
+    { x: 450, y: -250 },
+    { x: 150, y: -1850},
+    { x: 400, y: -2100 },
+    // Sektion 2
+    { x: 300, y: -3300 },
+    { x: 900, y: -3800 },
+    { x: 1050, y: -4100 },
+    { x: 100, y: -4600 },
+    { x: 700, y: -4800 },
+    { x: 1100, y: -5100 },
+    // Sektion 3
+    { x: 1350, y: -6200 },
+    { x: 250, y: -6800 },
+    { x: 100, y: -7100 },
+    { x: 800, y: -8850}
 ];
 //Speed blok
 let speedBlokArray = [
-    { x: 300, y: -100},
-    {}
+    // Sektion 1
+    { x: 300, y: -700 },
+    { x: 750, y: -1400 },
+    // Sektion 2
+    { x: 900, y: -3600 },
+    { x: 300, y: -4200 },
+    // Sektion 3
+    { x: 800, y: -6700 },
+    { x: 750, y: -7400}
 ];
 //Sand blok
 let sandBlokArray = [
-    { x: 400, y: -300},
-    {}
+    // Sektion 1
+    { x: 400, y: -1080 },
+    { x: 800, y: -1750 },
+    // Sektion 2
+    { x: 250, y: -3700 },
+    { x: 600, y: -4300 },
+    // Sektion 3
+    { x: 1100, y: -6400 },
+    { x: 600, y: -6900 },
+    { x: 1200, y: -7800 }
 ];
 //Trampolin blok
 let trampBlokArray = [
-    { x: 200, y: -500},
-    {}
+    { x: 200, y: -2500 }, 
+    { x: 900, y: -5500 }, 
+    { x: 1400, y: -8200},
+    { x: 500, y: -9000 } 
 ];
 //Fælde blok
 let fældeBlokArray = [
-    { x: 700, y: -700},
-    {}
+    // Sektion 1
+    { x: 700, y: -500 },
+    { x: 300, y: -1600 },
+    // Sektion 2
+    { x: 500, y: -4000 },
+    { x: 500, y: -4500 },
+    // Sektion 3
+    { x: 900, y: -7200 },
+    { x: 1000, y: -8775 }
 ];
 
 let bBlokFarve = '#808b96'
@@ -138,12 +177,12 @@ function verticalScrollandDraw() {
     if (isGodMode == true) {
         // Scroll når spilleren flyver i God Mode
         if (playerY < height * 0.1) {
-            scroll += playerYSpeed; // Ryk op
-            playerY += playerYSpeed;
+            scroll += playerYSpeed + 10; // Ryk op
+            playerY += playerYSpeed + 10;
         }
         if (playerY > height * 0.9) {
-            scroll -= playerYSpeed; // Ryk ned
-            playerY -= playerYSpeed;
+            scroll -= playerYSpeed + 10; // Ryk ned
+            playerY -= playerYSpeed + 10;
         }
     } else {
         // Normal scrolling (baseret på tyngdekraft)
@@ -205,10 +244,10 @@ function applyGravity() {
 function playerMovement() {
     if (isGodMode == true) {
         // Fri bevægelse i alle retninger
-        if (keyIsDown(65)) playerX -= playerXSpeed; // A
-        if (keyIsDown(68)) playerX += playerXSpeed; // D
-        if (keyIsDown(87)) playerY -= playerYSpeed; // W
-        if (keyIsDown(83)) playerY += playerYSpeed; // S
+        if (keyIsDown(65)) playerX -= playerXSpeed + 10; // A
+        if (keyIsDown(68)) playerX += playerXSpeed + 10; // D
+        if (keyIsDown(87)) playerY -= playerYSpeed + 10; // W
+        if (keyIsDown(83)) playerY += playerYSpeed + 10; // S
 
         playerYVelocity = 0; // Deaktiver tyngdekraft i God Mode
         playerGravityAcc = 0;
