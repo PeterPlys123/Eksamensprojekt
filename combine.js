@@ -15,19 +15,19 @@ let playerYSpeed = 10;
 
 let playerJumpSpeed = 10;
 let playerJumpSpeedTotal = playerJumpSpeed;
-let playerJumpMax = 30; // Max højde på hop
+let playerJumpMax = 20; // Max højde på hop  //Højde = (v^2)/(2*g)
 let isJumpDown = false;
 let isJumpReleased;
 let isJumpDownAcc = 20 / 120;
 
-let playerGravityAcc = 0.5; // Pixels per frame acceleration
-let playerGravityMax = 30;
+let playerGravityAcc = 0.35; // Pixels per frame acceleration
+let playerGravityMax = 25;
 let playerGround = false;
 
 let windStartX = 0; // Start X-position for vindsektionen
 let windEndX;   // Slut X-position for vindsektionen
-let windYStart = -800;   // Start Y-position for vindanimationen, skal have mindre værdi en slut Y
-let windYEnd = -300; // Slut Y-position for vindanimationen
+let windYStart = -4000;   // Start Y-position for vindanimationen, skal have mindre værdi en slut Y
+let windYEnd = -3000; // Slut Y-position for vindanimationen
 let windSpeed = 5;    // Hastighed for vindens bevægelse
 let windStrength = 4; // Hvor meget spilleren skubbes per frame
 
@@ -40,7 +40,10 @@ let gameTimerInterval; // Interval til spillets timer
 let startButton;
 
 // --Nye variabler til slutmål--
-let goalX, goalY, goalWidth, goalHeight; // Position og størrelse for målet
+let goalX // X for målet
+let goalY = -5000; // Placer målet et sted på banen
+let goalWidth = 50;
+let goalHeight = 100;
 let isGameOver = false; // Spillet er ikke slut endnu
 let restartButton; // Variabel til genstartsknappen
 
@@ -52,34 +55,49 @@ let collision
 let blokBredde = 75
 let blokTyk = 20
 
-let trampHop = -15
+let trampHop = -27 //Højde = (v^2)/(2*g)
 let blokKolStop = 1
 
-let bBlokArrayX = [150, 200]
-let bBlokArrayY = [50, -500]
+//Basis blok
+let bBlokArray = [
+    { x: 150, y: 50},
+    {}
+];
+//Speed blok
+let speedBlokArray = [
+    { x: 300, y: -100},
+    {}
+];
+//Sand blok
+let sandBlokArray = [
+    { x: 400, y: -300},
+    {}
+];
+//Trampolin blok
+let trampBlokArray = [
+    { x: 200, y: -500},
+    {}
+];
+//Fælde blok
+let fældeBlokArray = [
+    { x: 700, y: -700},
+    {}
+];
 
-let speedBlokArrayX = [250]
-let speedBlokArrayY = [125]
-
-let sandBlokArrayX = [350]
-let sandBlokArrayY = [250]
-
-let trampBlokArrayX = [450]
-let trampBlokArrayY = [375]
-
-let fældeBlokArrayX = [550]
-let fældeBlokArrayY = [400]
-
-let farveArray = ['black', 'red', 'gray', 'yellow', 'lightblue']
+let bBlokFarve = '#808b96'
+let speedBlokFarve = '#ADD8E6'
+let sandBlokFarve = '#C2B280'
+let trampBlokFarve = '#000000'
+let fældeBlokFarve = '#8f979f'
 
 
 // --emilt.js--
 function setupGame() {
-    cnvHeight = windowHeight - 100;
-    cnvWidth = windowWidth - 100;
+    cnvHeight = 700;
+    cnvWidth = 1500;
 
     playerX = cnvWidth / 2;
-    playerY = cnvHeight / 2;
+    playerY = 450;
     windEndX= cnvWidth;
 
 
@@ -97,10 +115,7 @@ function setupGame() {
     startButton.mousePressed(startGame);
 
     // Initialiser slutmålet
-    goalX = cnvWidth / 2; // Placer målet tæt på højre side
-    goalY = -500; // Placer målet et sted på banen
-    goalWidth = 50;
-    goalHeight = 100;
+    goalX = cnvWidth / 2; // Placer målet i midten
 }
 
 
@@ -280,18 +295,18 @@ function madsDraw(){
         //Når der er kollision med en platform er den true, og når man hopper, eller går over kanten er den false.
     
     //Her tegnes basis blokkene
-    for(let i = 0; i < bBlokArrayX.length; i++)
+    for(let i = 0; i < bBlokArray.length; i++)
         {
-        fill(farveArray[2])
-        rect(bBlokArrayX[i], bBlokArrayY [i], blokBredde, blokTyk)
+        fill(bBlokFarve);
+        rect(bBlokArray[i].x, bBlokArray[i].y, blokBredde, blokTyk)
         }
     
     //Her kigges der på kollision.
-        for(let i = 0; i < bBlokArrayY.length; i++)
+        for(let i = 0; i < bBlokArray.length; i++)
         {
-            if(playerY + playerR > (bBlokArrayY[i] + scroll) && playerY - playerR < (bBlokArrayY[i] + scroll))
+            if(playerY + playerR > (bBlokArray[i].y + scroll) && playerY - playerR < (bBlokArray[i].y + scroll))
             {
-                if(playerX + playerR > bBlokArrayX[i] && playerX - playerR <bBlokArrayX[i] + blokBredde)
+                if(playerX + playerR > bBlokArray[i].x && playerX - playerR <bBlokArray[i].x + blokBredde)
                 {
                     bBlok(i)
                 }
@@ -303,18 +318,18 @@ function madsDraw(){
         }
     
     //Her tegnes speed blokkene
-        for(let i = 0; i < speedBlokArrayX.length; i++)
+        for(let i = 0; i < speedBlokArray.length; i++)
             {
-            fill(farveArray[4])
-            rect(speedBlokArrayX[i], speedBlokArrayY[i], blokBredde, blokTyk)
+            fill(speedBlokFarve)
+            rect(speedBlokArray[i].x, speedBlokArray[i].y, blokBredde, blokTyk)
             }
         
     //Her kigges der på kollision.
-            for(let i = 0; i < speedBlokArrayY.length; i++)
+            for(let i = 0; i < speedBlokArray.length; i++)
             {
-                if(playerY + playerR > (speedBlokArrayY[i] + scroll) && playerY - playerR < (speedBlokArrayY[i] + scroll))
+                if(playerY + playerR > (speedBlokArray[i].y + scroll) && playerY - playerR < (speedBlokArray[i].y + scroll))
                 {
-                    if(playerX + playerR > speedBlokArrayX[i] && playerX - playerR < speedBlokArrayX[i] + blokBredde)
+                    if(playerX + playerR > speedBlokArray[i].x && playerX - playerR < speedBlokArray[i].x + blokBredde)
                     {
                         isBlok(i)
                     }
@@ -326,18 +341,18 @@ function madsDraw(){
             }
     
     //Her tegnes sandBlokken.
-    for(let i = 0; i < sandBlokArrayX.length; i++)
+    for(let i = 0; i < sandBlokArray.length; i++)
         {
-        fill(farveArray[3])
-        rect(sandBlokArrayX[i], sandBlokArrayY [i], blokBredde, blokTyk)
+        fill(sandBlokFarve)
+        rect(sandBlokArray[i].x, sandBlokArray[i].y, blokBredde, blokTyk)
         }
     
     //Her kigges der på kollision.
-        for(let i = 0; i < sandBlokArrayY.length; i++)
+        for(let i = 0; i < sandBlokArray.length; i++)
         {
-            if(playerY + playerR > (sandBlokArrayY[i] + scroll) && playerY - playerR < (sandBlokArrayY[i] + scroll))
+            if(playerY + playerR > (sandBlokArray[i].y + scroll) && playerY - playerR < (sandBlokArray[i].y + scroll))
             {
-                if(playerX + playerR > sandBlokArrayX[i] && playerX - playerR < sandBlokArrayX[i] + blokBredde)
+                if(playerX + playerR > sandBlokArray[i].x && playerX - playerR < sandBlokArray[i].x + blokBredde)
                 {
                     sandBlok(i)
                 }
@@ -349,18 +364,18 @@ function madsDraw(){
         }
     
     //Her tegnes trampolinblokkene.
-        for(let i = 0; i < trampBlokArrayX.length; i++)
+        for(let i = 0; i < trampBlokArray.length; i++)
             {
-            fill(farveArray[0])
-            rect(trampBlokArrayX[i], trampBlokArrayY [i], blokBredde, blokTyk)
+            fill(trampBlokFarve)
+            rect(trampBlokArray[i].x, trampBlokArray[i].y, blokBredde, blokTyk)
             }
         
         //Her kigges der på kollision.
-            for(let i = 0; i < trampBlokArrayY.length; i++)
+            for(let i = 0; i < trampBlokArray.length; i++)
             {
-                if(playerY + playerR > (trampBlokArrayY[i] + scroll) && playerY - playerR < (trampBlokArrayY[i] + scroll))
+                if(playerY + playerR > (trampBlokArray[i].y + scroll) && playerY - playerR < (trampBlokArray[i].y + scroll))
                 {
-                    if(playerX + playerR > trampBlokArrayX[i] && playerX - playerR < trampBlokArrayX[i] + blokBredde)
+                    if(playerX + playerR > trampBlokArray[i].x && playerX - playerR < trampBlokArray[i].x + blokBredde)
                     {
                         trampBlok(i)
                     }
@@ -372,18 +387,18 @@ function madsDraw(){
             }
     
     //Her tegnes fælde blokken.
-            for(let i = 0; i < fældeBlokArrayX.length; i++)
+            for(let i = 0; i < fældeBlokArray.length; i++)
                 {
-                fill(farveArray[0])
-                rect(fældeBlokArrayX[i], fældeBlokArrayY [i], blokBredde, blokTyk)
+                fill(fældeBlokFarve)
+                rect(fældeBlokArray[i].x, fældeBlokArray[i].y, blokBredde, blokTyk)
                 }
             
             //Her kigges der på kollision.
-                for(let i = 0; i < fældeBlokArrayY.length; i++)
+                for(let i = 0; i < fældeBlokArray.length; i++)
                 {
-                    if(playerY + playerR > (fældeBlokArrayY[i] + scroll) && playerY - playerR < (fældeBlokArrayY[i] + scroll))
+                    if(playerY + playerR > (fældeBlokArray[i].y + scroll) && playerY - playerR < (fældeBlokArray[i].y + scroll))
                     {
-                        if(playerX + playerR > fældeBlokArrayX[i] && playerX - playerR < fældeBlokArrayX[i] + blokBredde)
+                        if(playerX + playerR > fældeBlokArray[i].x && playerX - playerR < fældeBlokArray[i].x + blokBredde)
                         {
                             fældeBlok(i)
                         }
@@ -399,11 +414,11 @@ function madsDraw(){
 
 function trampBlok(x)
 {
-    if(playerY <= trampBlokArrayY[x] + scroll)
+    if(playerY <= trampBlokArray[x].y + scroll)
         {
             playerYVelocity = trampHop
         }
-        if(playerY >= trampBlokArrayY[x] + scroll)
+        if(playerY >= trampBlokArray[x].y + scroll)
         {
             playerYVelocity = blokKolStop
         }
@@ -415,7 +430,7 @@ function fældeBlok(x)
         //Der er ingen kollision over, da det er meningen man skal falde igennem.
 
         //Her kigges der for kollision mens spilleren er under.
-        if(playerY >= fældeBlokArrayY[x] + scroll)
+        if(playerY >= fældeBlokArray[x].y + scroll)
         {
             playerYVelocity = blokKolStop
         }
@@ -425,13 +440,13 @@ function fældeBlok(x)
 function bBlok(x)
 {   
     //Her kigges der for, hvis kollisionen er mens spilleren er over blokken.
-    if(playerY <= bBlokArrayY[x] + scroll)
+    if(playerY <= bBlokArray[x].y + scroll)
     {
         playerGroundP = true
         playerYVelocity = -playerGravityAcc
     }
     //Her kigges der for kollision mens spilleren er under.
-    if(playerY >= bBlokArrayY[x] + scroll)
+    if(playerY >= bBlokArray[x].y + scroll)
     {
         playerYVelocity = blokKolStop
     }
@@ -441,12 +456,12 @@ function bBlok(x)
 
 function sandBlok(x)
 {
-    if(playerY <= sandBlokArrayY[x] + scroll)
+    if(playerY <= sandBlokArray[x].y + scroll)
     {
         playerGroundP = true
         playerYVelocity = 0
     }
-    if(playerY >= sandBlokArrayY[x] + scroll)
+    if(playerY >= sandBlokArray[x].y + scroll)
     {
         playerYVelocity = blokKolStop
     }
@@ -455,7 +470,7 @@ function sandBlok(x)
 
 function isBlok(x)
 {
-    if(playerY <= speedBlokArrayY[x] + scroll)
+    if(playerY <= speedBlokArray[x].y + scroll)
     {
         playerX -= playerXVelocity * 0.5
         playerXVelocity -= 1
@@ -463,7 +478,7 @@ function isBlok(x)
         playerGroundP = true
         playerYVelocity = -playerGravityAcc
     }
-    if(playerY >= speedBlokArrayY[x] + scroll)
+    if(playerY >= speedBlokArray[x].y + scroll)
     {
         playerYVelocity = blokKolStop
     }   
