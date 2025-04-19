@@ -146,15 +146,12 @@ function setupGame() {
     cnv.position(windowWidth - (windowWidth + cnvWidth) / 2, 0); // Centrere canvas
     scroll = 0;
 
-    // Opret startknap
-    startButton = createButton('Starter');
-    startButton.position(cnvWidth / 2 - 50, cnvHeight / 2 - 25);
-    startButton.size(100, 50);
-    startButton.style('font-size', '20px');
-    startButton.mousePressed(startGame);
+
 
     // Initialiser slutmålet
     goalX = cnvWidth / 2; // Placer målet i midten
+
+    startGame();
 }
 
 
@@ -323,133 +320,45 @@ function drawWind() {
 // --primærSide.js--
 
 
-function madsDraw(){
+function madsDraw()
+{
         //Hastighed til at glide på isblokkene.
         pPlayerX = newPlayerX
         newPlayerX = playerX
         playerXVelocity = pPlayerX - newPlayerX
-    
-        //Tyngdekraft
-        //Fungere ved at der er en ground, som skifter mellem true og false.
-        //Når der er kollision med en platform er den true, og når man hopper, eller går over kanten er den false.
-    
-    //Her tegnes basis blokkene
-    for(let i = 0; i < bBlokArray.length; i++)
-        {
-        fill(bBlokFarve);
-        rect(bBlokArray[i].x, bBlokArray[i].y, blokBredde, blokTyk)
-        }
-    
-    //Her kigges der på kollision.
-        for(let i = 0; i < bBlokArray.length; i++)
-        {
-            if(playerY + playerR > (bBlokArray[i].y + scroll) && playerY - playerR < (bBlokArray[i].y + scroll))
-            {
-                if(playerX + playerR > bBlokArray[i].x && playerX - playerR <bBlokArray[i].x + blokBredde)
-                {
-                    bBlok(i)
-                }
-                else
-                {
-                    playerGroundP = false
-                }
-            }
-        }
-    
-    //Her tegnes speed blokkene
-        for(let i = 0; i < speedBlokArray.length; i++)
-            {
-            fill(speedBlokFarve)
-            rect(speedBlokArray[i].x, speedBlokArray[i].y, blokBredde, blokTyk)
-            }
-        
-    //Her kigges der på kollision.
-            for(let i = 0; i < speedBlokArray.length; i++)
-            {
-                if(playerY + playerR > (speedBlokArray[i].y + scroll) && playerY - playerR < (speedBlokArray[i].y + scroll))
-                {
-                    if(playerX + playerR > speedBlokArray[i].x && playerX - playerR < speedBlokArray[i].x + blokBredde)
-                    {
-                        isBlok(i)
-                    }
-                    else
-                    {
-                        playerGroundP = false
-                    }
-                }
-            }
-    
-    //Her tegnes sandBlokken.
-    for(let i = 0; i < sandBlokArray.length; i++)
-        {
-        fill(sandBlokFarve)
-        rect(sandBlokArray[i].x, sandBlokArray[i].y, blokBredde, blokTyk)
-        }
-    
-    //Her kigges der på kollision.
-        for(let i = 0; i < sandBlokArray.length; i++)
-        {
-            if(playerY + playerR > (sandBlokArray[i].y + scroll) && playerY - playerR < (sandBlokArray[i].y + scroll))
-            {
-                if(playerX + playerR > sandBlokArray[i].x && playerX - playerR < sandBlokArray[i].x + blokBredde)
-                {
-                    sandBlok(i)
-                }
-                else
-                {
-                    playerGroundP = false
-                }
-            }
-        }
-    
-    //Her tegnes trampolinblokkene.
-        for(let i = 0; i < trampBlokArray.length; i++)
-            {
-            fill(trampBlokFarve)
-            rect(trampBlokArray[i].x, trampBlokArray[i].y, blokBredde, blokTyk)
-            }
-        
-        //Her kigges der på kollision.
-            for(let i = 0; i < trampBlokArray.length; i++)
-            {
-                if(playerY + playerR > (trampBlokArray[i].y + scroll) && playerY - playerR < (trampBlokArray[i].y + scroll))
-                {
-                    if(playerX + playerR > trampBlokArray[i].x && playerX - playerR < trampBlokArray[i].x + blokBredde)
-                    {
-                        trampBlok(i)
-                    }
-                    else
-                    {
-                        playerGroundP = false
-                    }
-                }
-            }
-    
-    //Her tegnes fælde blokken.
-            for(let i = 0; i < fældeBlokArray.length; i++)
-                {
-                fill(fældeBlokFarve)
-                rect(fældeBlokArray[i].x, fældeBlokArray[i].y, blokBredde, blokTyk)
-                }
-            
-            //Her kigges der på kollision.
-                for(let i = 0; i < fældeBlokArray.length; i++)
-                {
-                    if(playerY + playerR > (fældeBlokArray[i].y + scroll) && playerY - playerR < (fældeBlokArray[i].y + scroll))
-                    {
-                        if(playerX + playerR > fældeBlokArray[i].x && playerX - playerR < fældeBlokArray[i].x + blokBredde)
-                        {
-                            fældeBlok(i)
-                        }
-                        else
-                        {
-                            playerGroundP = false
-                        }
-                    }
-                }
+
+        platform(bBlokArray, bBlokFarve, bBlok)
+        platform(speedBlokArray, speedBlokFarve, speedBlok)
+        platform(sandBlokArray, sandBlokFarve, sandBlok)
+        platform(trampBlokArray, trampBlokFarve, trampBlok)
+        platform(fældeBlokArray, fældeBlokFarve, fældeBlok)
 }
 
 // --platformType.js--
+function platform(blokArray, blokFarve, blokFunktion)
+{
+    for(let i = 0; i < blokArray.length; i++)
+    {
+        fill(blokFarve)
+        rect(blokArray[i].x, blokArray[i].y, blokBredde, blokTyk)
+    }
+
+    for(let i = 0; i < blokArray.length; i++)
+    {
+
+        if(playerY + playerR > (blokArray[i].y + scroll) && playerY - playerR < (blokArray[i].y + scroll))
+        {
+            if(playerX + playerR > blokArray[i].x && playerX - playerR < blokArray[i].x + blokBredde)
+            {
+                blokFunktion(i)
+            }
+            else
+            {
+                playerGroundP = false
+            }
+        }
+    }
+}
 
 function trampBlok(x)
 {
@@ -507,7 +416,7 @@ function sandBlok(x)
 }
 
 
-function isBlok(x)
+function speedBlok(x)
 {
     if(playerY <= speedBlokArray[x].y + scroll)
     {
@@ -525,8 +434,8 @@ function isBlok(x)
 
 
 // --Start spil--
-function startGame() {
-
+function startGame(){
+    startKnap.remove(); // Skjul startknappen
 
     // Start nedtælling
     countdownInterval = setInterval(() => {
@@ -535,7 +444,6 @@ function startGame() {
             clearInterval(countdownInterval);
             isGameStarted = true; // Aktiver spillet
             startTimer(); // Start spillets timer
-            startButton.remove(); // Skjul startknappen
         }
     }, 1000);
 }
@@ -585,7 +493,7 @@ function restartGame() {
     }
 
     // Start spillet igen
-    startGame();
+    setupTitle();
 }
 
 // --Slut spil--
@@ -646,7 +554,7 @@ function handleGameLogic() {
 
 // --Setup og draw--
 function setup(){
-    setupGame();
+    setupTitle();
 }
 
 function draw(){
@@ -654,4 +562,15 @@ function draw(){
 
     handleGameLogic(); // Håndter spillets logik og UI
     console.log('ground', playerGround, 'p', playerGroundP, 'scroll', scroll)
+}
+
+function setupTitle(){
+    background('lightblue')
+    createCanvas(1500, 680)
+
+    startKnap = createButton('Start spil');
+    startKnap.position(windowWidth / 2 - 100, windowHeight / 2 - 50);
+    startKnap.size(200, 75);
+    startKnap.style('font-size', '40px');
+    startKnap.mousePressed(setupGame);
 }

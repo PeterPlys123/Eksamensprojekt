@@ -54,7 +54,7 @@ function sandBlok(x)
 }
 
 
-function isBlok(x)
+function speedBlok(x)
 {
     if(playerY <= speedBlokArrayY[x])
     {
