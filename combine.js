@@ -132,6 +132,7 @@ let fældeBlokFarve = '#8f979f'
 
 // --emilt.js--
 function setupGame() {
+
     cnvHeight = 700;
     cnvWidth = 1500;
 
@@ -435,8 +436,6 @@ function speedBlok(x)
 
 // --Start spil--
 function startGame(){
-    startKnap.remove(); // Skjul startknappen
-
     // Start nedtælling
     countdownInterval = setInterval(() => {
         countdown--;
@@ -474,28 +473,6 @@ function handleGameStartUI() {
     }
 }
 
-// --Genstart spil--
-function restartGame() {
-    // Nulstil spillets variabler
-    isGameOver = false;
-    isGameStarted = false;
-    countdown = 3;
-    timer = 0;
-    scroll = 0;
-    playerX = cnvWidth / 2;
-    playerY = cnvHeight / 2;
-    playerYVelocity = 0;
-
-    // Fjern genstartsknappen
-    if (restartButton) {
-        restartButton.remove();
-        restartButton = null;
-    }
-
-    // Start spillet igen
-    setupTitle();
-}
-
 // --Slut spil--
 function handleGoal() {
     if (isGameOver) {
@@ -508,11 +485,11 @@ function handleGoal() {
 
         // Opret genstartsknap
         if (!restartButton) {
-            restartButton = createButton('Genstart');
-            restartButton.position(cnvWidth / 2, cnvHeight / 2 + 50);
-            restartButton.size(100, 50);
+            restartButton = createButton('Titelskærm');
+            restartButton.position(cnvWidth / 2, cnvHeight / 2 + 60);
+            restartButton.size(100, 55);
             restartButton.style('font-size', '20px');
-            restartButton.mousePressed(restartGame);
+            restartButton.mousePressed(titelSkærmSkift);
         }
     } else {
         // Tegn flagstangen
@@ -554,23 +531,22 @@ function handleGameLogic() {
 
 // --Setup og draw--
 function setup(){
-    setupTitle();
+    setupGame();
 }
 
 function draw(){
     background('#33a2ff');
 
+    if (!startGame) {
+        fill('brown');
+        textSize(150);
+        text('Hopeless Heights', width / 2, 75);}
+
     handleGameLogic(); // Håndter spillets logik og UI
     console.log('ground', playerGround, 'p', playerGroundP, 'scroll', scroll)
+
 }
 
-function setupTitle(){
-    background('lightblue')
-    createCanvas(1500, 680)
-
-    startKnap = createButton('Start spil');
-    startKnap.position(windowWidth / 2 - 100, windowHeight / 2 - 50);
-    startKnap.size(200, 75);
-    startKnap.style('font-size', '40px');
-    startKnap.mousePressed(setupGame);
+function titelSkærmSkift(){
+window.location.href = '1start.html'
 }
