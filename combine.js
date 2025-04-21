@@ -344,7 +344,7 @@ function platform(blokArray, blokFarve, blokFunktion)
         rect(blokArray[i].x, blokArray[i].y, blokBredde, blokTyk)
 
         if(playerY + playerR > (blokArray[i].y + scroll) && playerY - playerR < (blokArray[i].y + scroll))
-        {
+        {   
             if(playerX + playerR > blokArray[i].x && playerX - playerR < blokArray[i].x + blokBredde)
             {
                 blokFunktion(i)
