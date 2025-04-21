@@ -1,7 +1,9 @@
 function setup() 
 {
+    //Der tegnes et canvas for denne HTML fil.
     createCanvas(1500, 680)
 
+    
     startKnap = createButton('Start spil');
     startKnap.position(windowWidth / 2 - 100, windowHeight / 2 - 50);
     startKnap.size(200, 75);

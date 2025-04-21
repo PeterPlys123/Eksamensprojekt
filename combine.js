@@ -342,10 +342,6 @@ function platform(blokArray, blokFarve, blokFunktion)
     {
         fill(blokFarve)
         rect(blokArray[i].x, blokArray[i].y, blokBredde, blokTyk)
-    }
-
-    for(let i = 0; i < blokArray.length; i++)
-    {
 
         if(playerY + playerR > (blokArray[i].y + scroll) && playerY - playerR < (blokArray[i].y + scroll))
         {
