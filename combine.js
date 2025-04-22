@@ -481,7 +481,7 @@ function handleGoal() {
 
         // Opret genstartsknap
         if (!restartButton) {
-            restartButton = createButton('Titelskærm');
+            restartButton = createButton('Menu');
             restartButton.position(cnvWidth / 2, cnvHeight / 2 + 60);
             restartButton.size(100, 55);
             restartButton.style('font-size', '20px');
