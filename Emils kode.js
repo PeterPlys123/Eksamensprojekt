@@ -249,17 +249,16 @@ function handleGameStartUI() {
         fill('white');
         textAlign(CENTER, CENTER);
         if (countdown > 0) {
+            // Vis nedtælling på skærmen
             text('Starter om:' + ' ' + countdown, cnvWidth / 2 - 5, cnvHeight / 2);
-        } else {
-            text('Klar!', cnvWidth / 2, cnvHeight / 2);
-        }
+        } 
     } else {
-        // Vis timer øverst på skærmen
+        // Når spillet er startet, vis timeren øverst på skærmen
         textSize(24);
         fill('white');
         textAlign(LEFT, TOP);
         text('Tid:' + ' ' + timer + ' ' + 'sek', 10, 10);
-        //Tegn alt
+        // Kalder funktion til at tegne spillets elementer
         verticalScrollandDraw();
     }
 }
