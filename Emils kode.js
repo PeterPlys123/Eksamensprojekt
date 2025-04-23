@@ -1,4 +1,3 @@
-// --Alle variabler først--
 let cnvWidth, cnvHeight, cnv; // Canvas
 
 let scroll;
@@ -47,89 +46,6 @@ let goalHeight = 100;
 let isGameOver = false; // Spillet er ikke slut endnu
 let restartButton; // Variabel til genstartsknappen
 
-let pPlayerX,
-newPlayerX
-
-let playerGroundP = false
-let collision
-let blokBredde = 75
-let blokTyk = 20
-
-let trampHop = -29 //Højde = (v^2)/(2*g) = (27^2)/(2*0.35) = 1200 pixels
-let blokKolStop = 1
-
-//Basis blok
-let bBlokArray = [
-    // Sektion 1
-    { x: 300, y: 200 },
-    { x: 450, y: -250 },
-    { x: 150, y: -1850},
-    { x: 400, y: -2100 },
-    // Sektion 2
-    { x: 300, y: -3300 },
-    { x: 900, y: -3800 },
-    { x: 1050, y: -4100 },
-    { x: 100, y: -4600 },
-    { x: 700, y: -4800 },
-    { x: 1100, y: -5100 },
-    // Sektion 3
-    { x: 1350, y: -6200 },
-    { x: 250, y: -6800 },
-    { x: 100, y: -7100 },
-    { x: 800, y: -8850}
-];
-//Speed blok
-let speedBlokArray = [
-    // Sektion 1
-    { x: 300, y: -700 },
-    { x: 750, y: -1400 },
-    // Sektion 2
-    { x: 900, y: -3600 },
-    { x: 300, y: -4200 },
-    // Sektion 3
-    { x: 800, y: -6700 },
-    { x: 750, y: -7400}
-];
-//Sand blok
-let sandBlokArray = [
-    // Sektion 1
-    { x: 400, y: -1080 },
-    { x: 800, y: -1750 },
-    // Sektion 2
-    { x: 250, y: -3700 },
-    { x: 600, y: -4300 },
-    // Sektion 3
-    { x: 1100, y: -6400 },
-    { x: 600, y: -6900 },
-    { x: 1200, y: -7800 }
-];
-//Trampolin blok
-let trampBlokArray = [
-    { x: 200, y: -2500 }, 
-    { x: 900, y: -5500 }, 
-    { x: 1400, y: -8200},
-    { x: 500, y: -9000 } 
-];
-//Fælde blok
-let fældeBlokArray = [
-    // Sektion 1
-    { x: 700, y: -500 },
-    { x: 300, y: -1600 },
-    // Sektion 2
-    { x: 500, y: -4000 },
-    { x: 500, y: -4500 },
-    // Sektion 3
-    { x: 900, y: -7200 },
-    { x: 1000, y: -8775 }
-];
-
-let bBlokFarve = '#808b96'
-let speedBlokFarve = '#ADD8E6'
-let sandBlokFarve = '#C2B280'
-let trampBlokFarve = '#000000'
-let fældeBlokFarve = '#8f979f'
-
-
 function setupGame() {
 
     cnvHeight = 700;
@@ -153,8 +69,6 @@ function setupGame() {
 
     startGame();
 }
-
-
 function drawPlayer() {
     stroke('black');
     strokeWeight(2);
@@ -312,115 +226,6 @@ function drawWind() {
     noStroke();
 }
 
-function madsDraw()
-{
-        //Hastighed til at glide på isblokkene.
-        pPlayerX = newPlayerX
-        newPlayerX = playerX
-        playerXVelocity = pPlayerX - newPlayerX
-
-        platform(bBlokArray, bBlokFarve, bBlok)
-        platform(speedBlokArray, speedBlokFarve, speedBlok)
-        platform(sandBlokArray, sandBlokFarve, sandBlok)
-        platform(trampBlokArray, trampBlokFarve, trampBlok)
-        platform(fældeBlokArray, fældeBlokFarve, fældeBlok)
-}
-
-
-function platform(blokArray, blokFarve, blokFunktion)
-{
-    for(let i = 0; i < blokArray.length; i++)
-    {
-        fill(blokFarve)
-        rect(blokArray[i].x, blokArray[i].y, blokBredde, blokTyk)
-
-        if(playerY + playerR > (blokArray[i].y + scroll) && playerY - playerR < (blokArray[i].y + scroll))
-        {   
-            if(playerX + playerR > blokArray[i].x && playerX - playerR < blokArray[i].x + blokBredde)
-            {
-                blokFunktion(i)
-            }
-            else
-            {
-                playerGroundP = false
-            }
-        }
-    }
-}
-
-function trampBlok(x)
-{
-    if(playerY <= trampBlokArray[x].y + scroll)
-        {
-            playerYVelocity = trampHop
-        }
-        if(playerY >= trampBlokArray[x].y + scroll)
-        {
-            playerYVelocity = blokKolStop
-        }
-}
-
-
-function fældeBlok(x)
-{
-        //Der er ingen kollision over, da det er meningen man skal falde igennem.
-
-        //Her kigges der for kollision mens spilleren er under.
-        if(playerY >= fældeBlokArray[x].y + scroll)
-        {
-            playerYVelocity = blokKolStop
-        }
-}
-
-
-function bBlok(x)
-{   
-    //Her kigges der for, hvis kollisionen er mens spilleren er over blokken.
-    if(playerY <= bBlokArray[x].y + scroll)
-    {
-        playerGroundP = true
-        playerYVelocity = -playerGravityAcc
-    }
-    //Her kigges der for kollision mens spilleren er under.
-    if(playerY >= bBlokArray[x].y + scroll)
-    {
-        playerYVelocity = blokKolStop
-    }
-}
-
-
-
-function sandBlok(x)
-{
-    if(playerY <= sandBlokArray[x].y + scroll)
-    {
-        playerGroundP = true
-        playerYVelocity = 0
-    }
-    if(playerY >= sandBlokArray[x].y + scroll)
-    {
-        playerYVelocity = blokKolStop
-    }
-}
-
-
-function speedBlok(x)
-{
-    if(playerY <= speedBlokArray[x].y + scroll)
-    {
-        playerX -= playerXVelocity * 0.5
-        playerXVelocity -= 1
-
-        playerGroundP = true
-        playerYVelocity = -playerGravityAcc
-    }
-    if(playerY >= speedBlokArray[x].y + scroll)
-    {
-        playerYVelocity = blokKolStop
-    }   
-}
-
-
 function startGame(){
     // Start nedtælling
     countdownInterval = setInterval(() => {
@@ -527,8 +332,4 @@ function draw(){
         text('Hopeless Heights', width / 2, 75);}
 
     handleGameLogic(); // Håndter spillets logik og UI
-}
-
-function titelSkærmSkift(){
-window.location.href = '1start.html'
 }

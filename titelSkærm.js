@@ -1,7 +1,11 @@
 function setup() 
 {
     //Der tegnes et canvas for denne HTML fil.
-    createCanvas(1500, 680)
+    cnvHeight = 700;
+    cnvWidth = 1500;
+
+    cnv = createCanvas(cnvWidth, cnvHeight);
+    cnv.position(windowWidth - (windowWidth + cnvWidth) / 2, 0); // Centrere canvas
 
     //Her tegnes startknappen, som der skal trykkes på for at starte.
     //Der bestemmes hvad der skal stå på, hvor den skal tegnes, og størrelsen.
